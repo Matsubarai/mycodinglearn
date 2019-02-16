@@ -495,6 +495,22 @@ ID(迭代加深搜索) = BFS+DFS, 即限定一个不到尽头的深度进行DFS.
 
 ### Bellman-Ford算法/SPFA
 
+#### 松弛操作
+
+三点s, u, v, 求s到v的最短路.
+此时已经知道s与u, v的距离dis[u], dis[v].
+那么, 如果u到v的距离 + dis[u] 比直接由s到v的dis[v]短, 那么则更新dis[v].
+
+```cpp
+if(edge[u][v] + dis[u] < dis[v]){
+    dis[v] = dis[u] + edge[u][v];
+}
+```
+
+#### Bellman-Ford算法
+
+Bellman-Ford 算法是一种用于计算带权有向图中单源最短路径（SSSP：Single-Source Shortest Path）的算法
+
 ### 树与二叉树
 
 树有以下特性:
@@ -538,9 +554,8 @@ ID(迭代加深搜索) = BFS+DFS, 即限定一个不到尽头的深度进行DFS.
 后序: 左子树, 右子树, 根.\
 递归实现.
 
-### 二叉查找树
-
-二叉查找树(Binary Search Tree), 又被称为二叉搜索树.\
+### 二叉查找树(BST)
+二叉查找树(Binary Search Tree, BST), 又被称为二叉搜索树.\
 设x为二叉查找树中的一个结点, x节点包含关键字key, 节点x的key值记为key[x].\
 如果y是x的左子树中的一个结点, 则key[y] <= key[x], 如果y是x的右子树的一个结点则, key[y] >= key[x].
 
@@ -554,30 +569,30 @@ ID(迭代加深搜索) = BFS+DFS, 即限定一个不到尽头的深度进行DFS.
 x是"一个右孩子", 则"x的前驱结点"为 "它的父结点".\
 x是"一个左孩子", 则查找"x的最低的父结点, 并且该父结点要具有右孩子", 找到的这个"最低的父结点"就是"x的前驱结点".
 
-对节点的后继:
+对节点的后继: 
 
 > x没有右孩子.则x有以下两种可能: \
 x是"一个左孩子", 则"x的后继结点"为 "它的父结点".\
 x是"一个右孩子", 则查找"x的最低的父结点, 并且该父结点要具有左孩子", 找到的这个"最低的父结点"就是"x的后继结点".
 
-#### 查找
+#### 查找, 插入
 
 ```cpp
 \\递归
 Node* bstree_search(BSTree x, Type key)
 {
-    if (x == NULL || x -> key == key)
+    if (x == NULL || x->key == key)
         return x;
 
-    if (key < x -> key)
-        return bstree_search(x -> left, key);
+    if (key < x->key)
+        return bstree_search(x->left, key);
     else
-        return bstree_search(x -> right, key);
+        return bstree_search(x->right, key);
 }
 \\非递归
 Node* iterative_bstree_search(BSTree x, Type key)
 {
-    while ((x!=NULL) && (x->key!=key))
+    while ((x != NULL) && (x->key != key))
     {
         if (key < x->key)
             x = x->left;
@@ -600,7 +615,7 @@ Node* bstree_predecessor(Node *x) //前驱
     // (01) x是"一个右孩子", 则"x的前驱结点"为 "它的父结点".
     // (01) x是"一个左孩子", 则查找"x的最低的父结点, 并且该父结点要具有右孩子", 找到的这个"最低的父结点"就是"x的前驱结点".
     Node* y = x->parent;
-    while ((y!=NULL) && (x==y->left))
+    while ((y != NULL) && (x == y->left))
     {
         x = y;
         y = y->parent;
@@ -619,13 +634,41 @@ Node* bstree_successor(Node *x) //后继
     // (01) x是"一个左孩子", 则"x的后继结点"为 "它的父结点".
     // (02) x是"一个右孩子", 则查找"x的最低的父结点, 并且该父结点要具有左孩子", 找到的这个"最低的父结点"就是"x的后继结点".
     Node* y = x->parent;
-    while ((y!=NULL) && (x==y->right))
+    while ((y != NULL) && (x == y->right))
     {
         x = y;
         y = y->parent;
     }
 
     return y;
+}
+```
+
+```cpp
+static Node* bstree_insert(BSTree tree, Node *z)
+{
+    Node *y = NULL;
+    Node *x = tree;
+
+    // 查找z的插入位置
+    while (x != NULL)
+    {
+        y = x;
+        if (z->key < x->key)
+            x = x->left;
+        else
+            x = x->right;
+    }
+
+    z->parent = y;
+    if (y == NULL)
+        tree = z;
+    else if (z->key < y->key)
+        y->left = z;
+    else
+        y->right = z;
+
+    return tree;
 }
 ```
 
