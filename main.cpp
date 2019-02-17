@@ -25,7 +25,7 @@ struct edge{
 };
 vector<edge> e[1000];
 inline void addEdge(int u, int v, int w){
-    e[u].push_back(edge(u, v));
+    e[u].push_back(edge(v, w));
 }
 
 inline int read(){
@@ -79,11 +79,12 @@ string BigIntegerMulit(string &a, string &b){ //string作参数必须使用引�
     return ans;
 }
 
-void POJ2255();
-
 int main() {
-    //ios::sync_with_stdio(false);
-    //cin.tie(0);
-    POJ2255();
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    priority_queue<int> pq;
+    pq.push(1);
+    pq.push(2);
+    cout << pq.top(); //2
     return 0;
 }
