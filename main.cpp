@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#pragma GCC optimize(2)
+//#pragma GCC optimize(2)
 using namespace std;
 /*
 struct edge{
@@ -79,12 +79,11 @@ string BigIntegerMulit(string &a, string &b){ //string作参数必须使用引�
     return ans;
 }
 
+void POJ1789();
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    priority_queue<int> pq;
-    pq.push(1);
-    pq.push(2);
-    cout << pq.top(); //2
+    POJ1789();
     return 0;
 }
