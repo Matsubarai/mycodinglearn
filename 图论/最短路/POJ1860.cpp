@@ -41,7 +41,7 @@ void POJ1860(){
     dis[s] = v;
     queue<int> q;
     q.push(s);
-    visit[s] = 1;
+    visit[s] = true;
     while(!q.empty()){
         int cnt = q.front();
         visit[cnt] = false;

@@ -79,11 +79,11 @@ string BigIntegerMulit(string &a, string &b){ //string作参数必须使用引�
     return ans;
 }
 
-void POJ1789();
+void POJ1062();
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    POJ1789();
+    POJ1062();
     return 0;
 }
