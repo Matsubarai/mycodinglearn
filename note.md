@@ -1704,6 +1704,86 @@ int gcd(int a, int b){
 
 当a, b 为Fibonacci数列时复杂度最高.
 
+### 扩展欧几里得算法(EX-Euclid)
+
+定理: ax + by = gcd(a, b)一定有一组整数解。
+
+a, b为自然数。
+
+Foundation: 辗转相除法(Euclid算法)
+
+```cpp
+int exgcd(int a, int b, int &x, int &y)
+{
+    if(b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int r = exgcd(b, a % b, x, y);
+    int t = x;
+    x = y;
+    y = t - a / b * y;
+    return r;
+}
+```
+
+```cpp
+int exgcd(int m,int n,int &x,int &y)
+{
+    int x1,y1,x0,y0;
+    x0=1; y0=0;
+    x1=0; y1=1;
+    x=0; y=1;
+    int r=m%n;
+    int q=(m-r)/n;
+    while(r)
+    {
+        x=x0-q*x1; y=y0-q*y1;
+        x0=x1; y0=y1;
+        x1=x; y1=y;
+        m=n; n=r; r=m%n;
+        q=(m-r)/n;
+    }
+    return n;
+}
+```
+
+#### 求解不定方程
+
+线性丢番图方程: ax + by = c
+
+若 c % gcd(a, b) == 0, 则该方程存在整数解, 否则不存在.
+
+x = x0 * (c / Gcd(a,b))
+
+y = y0 * (c / Gcd(a,b))
+
+为一组解。
+
+x = x1 + b / Gcd(a, b) * t
+
+y = y1 -  a / Gcd(a, b) * t
+
+(其中t为任意整数)
+
+为通解。
+
+```cpp
+bool linear_equation(int a,int b,int c,int &x,int &y)
+{
+    int d=exgcd(a,b,x,y);
+    if(c%d)
+        return false;
+    int k=c/d;
+    x*=k; y*=k;    //求得的只是其中一组解
+    return true;
+}
+```
+
+
+
 ## 质数, 筛法
 
 ### 质数定理
@@ -1772,7 +1852,7 @@ void sieve(int n){
 
 合数一定会被筛除.
 
-```
+```cpp
 void EulerSieve(int n){
     bool notprime[n] = {0};
     vector<int> prime;
@@ -1810,6 +1890,26 @@ d为逆元, 记为inv(b).
 当p为质数时: 
 
 ![](pic/截图_2019-02-15_01-17-31.png)
+
+### 快速幂
+
+![](I:\crayonc\CLionProjects\test\pic\TIM截图20190320233936.png)
+
+```cpp
+int quickPow(int a, int b, int c) {
+  // calculates a^b mod c
+  int res = 1, bas = a;
+  while (b) {
+    if (b & 1) res = (LL)res * bas % c;
+    // Transform to long long in case of overflow.
+    bas = bas * bas % c;
+    b >>= 1;
+  }
+  return res;
+}
+```
+
+
 
 ## 高斯消元(POJ1222, PO1753)
 
@@ -1920,3 +2020,8 @@ int solve()
     }
 }
 ```
+
+## DP/LCS/LIS问题
+
+> **最长公共子串（Longest Common Substring）**与**最长公共子序列（Longest Common Subsequence）**的区别： 子串要求在原字符串中是连续的，而子序列则只需保持相对顺序，并不要求连续。
+
